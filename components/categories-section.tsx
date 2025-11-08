@@ -1,0 +1,70 @@
+"use client"
+
+import { useState } from "react"
+
+interface Category {
+  id: string
+  name: string
+  icon: string
+}
+
+const allCategories: Category[] = [
+  { id: "pizza", name: "Pizza", icon: "🍕" },
+  { id: "burger", name: "Burgers", icon: "🍔" },
+  { id: "pasta", name: "Pasta", icon: "🍝" },
+  { id: "biryani", name: "Biryani", icon: "🍲" },
+  { id: "salad", name: "Salads", icon: "🥗" },
+  { id: "dessert", name: "Desserts", icon: "🍰" },
+  { id: "chinese", name: "Chinese", icon: "🥡" },
+  { id: "mexican", name: "Mexican", icon: "🌮" },
+  { id: "seafood", name: "Seafood", icon: "🦞" },
+  { id: "tandoori", name: "Tandoori", icon: "🍗" },
+  { id: "noodles", name: "Noodles", icon: "🍜" },
+  { id: "rice", name: "Rice Bowls", icon: "🍚" },
+  { id: "breads", name: "Breads", icon: "🥖" },
+  { id: "appetizer", name: "Appetizers", icon: "🍱" },
+  { id: "beverage", name: "Beverages", icon: "🧃" },
+]
+
+interface CategoriesSectionProps {
+  onSelectCategory: (category: string) => void
+}
+
+export default function CategoriesSection({ onSelectCategory }: CategoriesSectionProps) {
+  const [showAll, setShowAll] = useState(false)
+
+  const displayCategories = showAll ? allCategories : allCategories.slice(0, 5)
+
+  const handleCategoryClick = (categoryId: string) => {
+    setShowAll(false)
+    onSelectCategory(categoryId)
+  }
+
+  return (
+    <section className="mb-12">
+      <h2 className="text-2xl font-bold text-foreground mb-6">What are you in the mood for?</h2>
+      <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+        {displayCategories.map((category) => (
+          <button
+            key={category.id}
+            onClick={() => handleCategoryClick(category.id)}
+            className="flex flex-col items-center justify-center p-6 rounded-full bg-card hover:bg-card/80 border border-border/50 transition-all duration-300 hover:scale-105 hover:border-primary/50 group w-24 h-24"
+          >
+            <div className="text-4xl group-hover:scale-110 transition-transform">{category.icon}</div>
+            <p className="text-center text-sm font-semibold text-foreground mt-2">{category.name}</p>
+          </button>
+        ))}
+
+        {!showAll && (
+          <button
+            onClick={() => setShowAll(true)}
+            className="flex flex-col items-center justify-center p-6 rounded-full bg-card/50 hover:bg-card border-2 border-dashed border-primary/50 hover:border-primary transition-all duration-300 hover:scale-105 group w-24 h-24"
+          >
+            <div className="text-3xl group-hover:scale-110 transition-transform">+</div>
+            <p className="text-center text-sm font-semibold text-primary">View More</p>
+          </button>
+        )}
+      </div>
+    </section>
+  )
+}
